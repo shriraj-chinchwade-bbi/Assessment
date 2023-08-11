@@ -1,8 +1,8 @@
-const first = document.getElementById("F");
+const first = document.getElementById("leftbox");
 
-const second = document.getElementById("S");
+const second = document.getElementById("middlebox");
 
-const third = document.getElementById("T");
+const third = document.getElementById("rightbox");
 
 first.addEventListener("click", function (event) {
   first.style.backgroundColor = "black";
