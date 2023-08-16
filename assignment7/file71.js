@@ -2,8 +2,14 @@ const data = [
   {
     type: "div",
     children: [
-      { type: "h1", children: [{ type: "p" }] },
-      { type: "ul", children: [{ type: "li" }, { type: "li" }] },
+      { type: "h1", children: [{ type: "p", text: "abtc" }] },
+      {
+        type: "ul",
+        children: [
+          { type: "li", text: "item 1" },
+          { type: "li", text: "item 2" },
+        ],
+      },
     ],
   },
 ];
@@ -18,6 +24,10 @@ function renderData(data, abc) {
     abc.appendChild(element);
 
     // console.log(`${elementData.type}`);
+    if (elementData.text) {
+      element.textContent = elementData.text;
+    }
+
     if (elementData.children) {
       renderData(elementData.children, element);
     }
