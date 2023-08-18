@@ -4,7 +4,7 @@ def num_to_cheque(number):
 
         ones=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen']
         tens=['','','twenty','thirty','fourty','fifty','sixty','seventy','eighty','ninty']
-        thousands=['','thousand','million','billion','trillion']
+        
         if number<20:
             return ones[number]
         elif number<100:
@@ -20,7 +20,7 @@ def num_to_cheque(number):
         #     return ones[number//1000]+"Thousand"
     if number==0:
         return 'zero'
-    thousands=['','thousand','million','billion']
+    thousands=['','thousand','million','billion','trillion']
     result=""
     index=0
     while number>0:
