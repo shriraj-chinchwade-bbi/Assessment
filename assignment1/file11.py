@@ -18,3 +18,4 @@ def newmatrix(row, col):
 result=newmatrix(rowSum,colSum)
 for row in result:
     print(row)
+    print("hello ")
