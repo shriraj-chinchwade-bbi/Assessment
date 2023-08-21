@@ -1,4 +1,6 @@
-number=int(input("Enter number: "))
+# number=int(input("Enter number: "))
+number=(999999999999999999999999999999999999)
+numbe2=(123456789012345678901234567890123456)
 def num_to_cheque(number):
     def less_than_thousand(number):
 
@@ -20,7 +22,7 @@ def num_to_cheque(number):
         #     return ones[number//1000]+"Thousand"
     if number==0:
         return 'zero'
-    thousands=['','thousand','million','billion','trillion','quadrillion']
+    thousands=['','thousand','million','billion','trillion','quadrillion','quintillion','sextillion', 'septillion', 'octillion', 'nonillion', 'decillion']
     result=""
     index=0
     while number>0:
@@ -40,3 +42,19 @@ def num_to_cheque(number):
 print(num_to_cheque(number))
 # for i in range(0,1100,3):
 #     print(num_to_cheque(i),i)
+
+# output:- nine Hundred ninty nine decillion 
+# nine Hundred ninty nine nonillion 
+# nine Hundred ninty nine octillion 
+# nine Hundred ninty nine septillion 
+# nine Hundred ninty nine sextillion 
+# nine Hundred ninty nine quintillion 
+# nine Hundred ninty nine quadrillion 
+# nine Hundred ninty nine trillion 
+# nine Hundred ninty nine billion 
+# nine Hundred ninty nine million 
+# nine Hundred ninty nine thousand 
+# nine Hundred ninty nine 
+
+
+
