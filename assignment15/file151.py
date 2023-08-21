@@ -20,7 +20,7 @@ def num_to_cheque(number):
         #     return ones[number//1000]+"Thousand"
     if number==0:
         return 'zero'
-    thousands=['','thousand','million','billion','trillion']
+    thousands=['','thousand','million','billion','trillion','quadrillion']
     result=""
     index=0
     while number>0:
