@@ -4,21 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Search</title>
+    <title>Country Information</title>
     <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-    <div id="logo">
-        <h3>Country Information</h3>
-    </div>
-    <div id="search-container">
-        <input type="text" id="search" placeholder="Enter a country name">
-        <button id="search-button">Search</button>
-    </div>
-    <div id="countries"></div>
-    <script src="script.js"></script>
+    <header>
+        <h1>Country Search</h1>
+    </header>
+    <main>
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search...">
+            <select id="search-option">
+                <option value="name">Name</option>
+                <option value="currency">Currency</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+        <button id="export-json">ExportJSON</button>
+        <div id="country-container">
+
+        </div>
+        <script src="script.js"></script>
+    </main>
 </body>
 
 </html>

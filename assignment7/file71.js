@@ -23,7 +23,6 @@ function renderData(data, abc) {
 
     abc.appendChild(element);
 
-    // console.log(`${elementData.type}`);
     if (elementData.text) {
       element.textContent = elementData.text;
     }
