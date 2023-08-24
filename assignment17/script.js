@@ -36,41 +36,43 @@ searchForm.addEventListener("submit", (e) => {
         checkCurrency(country.currencies, searchTerm))
     ) {
       displayCountryCard(country);
-      exportData.push({
-        img: country.flags.png,
-        name: country.name.common,
-        capital: country.capital,
-        population: country.population,
-      });
+      // exportData.push({
+      //   img: country.flags.png,
+      //   name: country.name.common,
+      //   capital: country.capital,
+      //   population: country.population,
+
+      // });
       foundCountry = true;
     }
   });
   if (!foundCountry) {
     displayErrorMessage("Country not found");
   }
+  exportButton.hidden = !foundCountry;
 });
 
 exportButton.addEventListener("click", () => {
   downloadJSON(exportData);
 });
 function checkCurrency(currencies, searchTerm) {
-  const currencyCodes = Object.keys(currencies);
-  return currencyCodes.some((code) => {
-    const currency = currencies[code];
-    return (
-      currency.name.toLowerCase().includes(searchTerm) ||
-      (currency.symbol && currency.symbol.toLowerCase().includes(searchTerm))
-    );
-  });
+  if (!currencies) {
+    return false;
+  }
+  const currencyKeys = Object.keys(currencies);
+  const lastCurrency = currencyKeys[currencyKeys.length - 1];
+  return lastCurrency.toLowerCase() === searchTerm;
 }
 function displayCountryCard(country) {
   const countryCard = document.createElement("div");
   countryCard.classList.add("country-card");
   countryCard.innerHTML = `
-<img src="${country.flags.png}" alt="${country.name.common}">
-${country.name.common}</h2>
-Capital: ${country.capital}</p>
-   <p>Population: ${country.population}</p>
+<img class="common" src="${country.flags.png}" alt="${country.name.common}">
+<h2 class="common">${country.name.common}</h2>
+<p class="common">Capital: ${country.capital}</p>
+   <p class="common">Population: ${country.population}</p>
+   <p class="common">Currency:${Object.keys(country.currencies)[0]}</p>
+   
   `;
   countryContainer.appendChild(countryCard);
 }
@@ -83,16 +85,62 @@ function displayErrorMessage(message) {
 }
 
 function downloadJSON(data) {
-  if (data.length === 0) {
-    console.log("No data to export.");
-    return;
+  const countryCards = Array.from(
+    countryContainer.querySelectorAll(".country-card")
+  );
+
+  if (countryCards.length > 0) {
+    const jsonData = countryCards.map((countryCard) => {
+      return {
+        type: countryCard.tagName.toLocaleLowerCase(),
+        class: countryCard.className,
+        children: Array.from(countryCard.children).map((childElement) => {
+          const childData = {
+            type: childElement.tagName.toLowerCase(),
+            class: childElement.className,
+          };
+          if (childElement.tagName.toLowerCase() === "img") {
+            childData.src = childElement.getAttribute("src");
+          } else {
+            childData.text = childElement.textContent;
+          }
+          return childData;
+        }),
+      };
+    });
+    const formatjsonData = JSON.stringify([jsonData], null, 2);
+
+    const dataStr =
+      "data:text/json;charset=utf-8," + encodeURIComponent(formatjsonData);
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "country_data.json");
+    downloadAnchor.click();
   }
-  const jsonData = JSON.stringify(data, null, 2);
-  const dataStr =
-    "data:text/json;charset=utf-8," + encodeURIComponent(jsonData);
-  const downloadAnchor = document.createElement("a");
-  downloadAnchor.setAttribute("href", dataStr);
-  downloadAnchor.setAttribute("download", "country_data.json");
-  downloadAnchor.textContent = "Download JSON";
-  downloadAnchor.click();
 }
+// const jsonData = JSON.stringify(
+//   data.map((country) => ({
+//     type: "div",
+//     class: "country-card",
+//     children: [
+//       { type: "img", class: "common", src: country.flags.png },
+//       { type: "h2", class: "common", text: country.name.common },
+//       { type: "p", class: "common", text: `Capital: ${country.capital}` },
+//       {
+//         type: "p",
+//         class: "common",
+//         text: `Population: ${country.population}`,
+//       },
+//     ],
+//   })),
+//   null,
+//   2
+// );
+//   const dataStr =
+//     "data:text/json;charset=utf-8," + encodeURIComponent(jsonData);
+//   const downloadAnchor = document.createElement("a");
+//   downloadAnchor.setAttribute("href", dataStr);
+//   downloadAnchor.setAttribute("download", "country_data.json");
+//   downloadAnchor.textContent = "Download JSON";
+//   downloadAnchor.click();
+// }
