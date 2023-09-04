@@ -1,115 +1,157 @@
+// import 'package:demo_space_exploration/loggedin.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MaterialApp(
+      title: 'Flutter Disney+',
+      home: TutorialHome(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class TutorialHome extends StatelessWidget {
+  const TutorialHome({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // Scaffold is a layout for
+    // the major Material Components.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+        appBar: AppBar(
+          leading: const IconButton(
+            icon: Icon(Icons.menu),
+            tooltip: 'Navigation Bar',
+            onPressed: null,
+          ),
+          title: const Text('Disney minus'),
+          actions: const [
+            IconButton(
+              icon: Icon(Icons.search),
+              tooltip: 'Search',
+              onPressed: null,
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        // body is the majority of the screen.
+        body: Column(
+          children: [
+            Container(
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: [
+                      Container(
+                        height: 200,
+                        width: 205,
+                        decoration: const BoxDecoration(
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                'https://www.vintagemovieposters.co.uk/wp-content/uploads/2018/12/IMG_3266.jpeg',
+                              ),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      Container(
+                        height: 200,
+                        width: 205,
+                        decoration: const BoxDecoration(
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                'https://i.insider.com/54ee12f86bb3f74155fb10ec?width=750&format=jpeg&auto=webp',
+                              ),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      Container(
+                        height: 200,
+                        width: 205,
+                        decoration: const BoxDecoration(
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                'https://www.vintagemovieposters.co.uk/wp-content/uploads/2021/12/IMG_4503-scaled.jpeg',
+                              ),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      Container(
+                        height: 200,
+                        width: 205,
+                        decoration: const BoxDecoration(
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                'https://www.vintagemovieposters.co.uk/wp-content/uploads/2019/10/IMG_1864.jpeg',
+                              ),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      Container(
+                        height: 200,
+                        width: 205,
+                        decoration: const BoxDecoration(
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                'https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2022/07/Avengers-Infinity-War-2018.jpeg?w=720',
+                              ),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                      Container(
+                        height: 200,
+                        width: 205,
+                        decoration: const BoxDecoration(
+                          image: const DecorationImage(
+                              image: NetworkImage(
+                                'https://i.insider.com/5ca3ba3792c88606ce34b614?width=750&format=jpeg&auto=webp',
+                              ),
+                              fit: BoxFit.fill),
+                        ),
+                      ),
+                    ]))),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Container(
+                    height: 500,
+                    padding: const EdgeInsets.all(5),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.lightGreen[500],
+                    ),
+                    child: const Center(
+                      child: Text('Movie Name'),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ));
   }
 }
+
+class Movie {
+  const Movie({
+    required this.name,
+    required this.hero,
+    required this.imageUrl,
+  });
+
+  String name;
+  String hero;
+  String imageUrl;
+}
+
+const locations = [
+  Movie(
+    name: 'Mount Rushmore',
+    hero: 'U.S.A',
+    imageUrl: '/01-mount-rushmore.jpg',
+  ),
+  Movie(
+    name: 'Gardens By The Bay',
+    hero: 'Singapore',
+    imageUrl: '/02-singapore.jpg',
+  ),
+];
