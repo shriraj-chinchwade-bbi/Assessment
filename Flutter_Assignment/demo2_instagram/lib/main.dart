@@ -130,28 +130,28 @@ class TutorialHome extends StatelessWidget {
         ));
   }
 }
-
-class Movie {
-  const Movie({
-    required this.name,
-    required this.hero,
-    required this.imageUrl,
-  });
-
-  String name;
-  String hero;
-  String imageUrl;
-}
-
-const locations = [
-  Movie(
-    name: 'Mount Rushmore',
-    hero: 'U.S.A',
-    imageUrl: '/01-mount-rushmore.jpg',
-  ),
-  Movie(
-    name: 'Gardens By The Bay',
-    hero: 'Singapore',
-    imageUrl: '/02-singapore.jpg',
-  ),
-];
+//
+// class Movie {
+//   const Movie({
+//     required this.name,
+//     required this.hero,
+//     required this.imageUrl,
+//   });
+//
+//   String name;
+//   String hero;
+//   String imageUrl;
+// }
+//
+// const locations = [
+//   Movie(
+//     name: 'Mount Rushmore',
+//     hero: 'U.S.A',
+//     imageUrl: '/01-mount-rushmore.jpg',
+//   ),
+//   Movie(
+//     name: 'Gardens By The Bay',
+//     hero: 'Singapore',
+//     imageUrl: '/02-singapore.jpg',
+//   ),
+// ];
