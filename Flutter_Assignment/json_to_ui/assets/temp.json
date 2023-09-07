@@ -2,9 +2,10 @@
     {
         "id": 1,
         "categoryName": "NEW Guidelines",
-        "showOnlySubCategory": false,
+        "showOnlySubCategory": true,
         "sequenceNo": "4",
-        "items": [{
+        "items": [
+            {
             "id": "GL40",
             "tag": [
                 "SA16",
@@ -185,7 +186,7 @@
     {
         "id": 0,
         "categoryName": "All Guidelines",
-        "showOnlySubCategory": false,
+        "showOnlySubCategory": true,
         "sequenceNo": "3",
         "items": [{
             "id": "GL40",
@@ -304,7 +305,7 @@
                     "name": "Pae­di­atrics",
                     "defaultProperties": {
                         "color": {
-                            "backgroundColor": "#F7CA11",
+                            "backgroundColor": "#F1CA11",
                             "themeColor": "#FFA2B4",
                             "textColor": "#303335"
                         },

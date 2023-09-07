@@ -145,7 +145,7 @@ class SubCategory {
   String? title;
   String? sequenceNo;
   bool? showSubCategoriesAsSeparateCarousel;
-  List<Items>? items;
+  List<Items1>? items;
 
   SubCategory(
       {this.title,
@@ -159,9 +159,9 @@ class SubCategory {
     showSubCategoriesAsSeparateCarousel =
         json['showSubCategoriesAsSeparateCarousel'];
     if (json['items'] != null) {
-      items = <Items>[];
+      items = <Items1>[];
       json['items'].forEach((v) {
-        items!.add(new Items.fromJson(v));
+        items!.add(Items1.fromJson(v));
       });
     }
   }
