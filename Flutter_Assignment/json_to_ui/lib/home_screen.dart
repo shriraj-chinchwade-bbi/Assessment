@@ -5,6 +5,7 @@ import 'package:json_to_ui/Sign_up.dart';
 import 'package:json_to_ui/profile_page.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
+import 'package:json_to_ui/sign_in.dart';
 import 'guideline_modal.dart' as modal;
 
 // import 'package:collection/collection.dart';

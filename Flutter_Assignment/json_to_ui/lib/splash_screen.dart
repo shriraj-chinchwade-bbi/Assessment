@@ -4,11 +4,9 @@ import 'package:json_to_ui/Sign_up.dart';
 import 'package:json_to_ui/profile_page.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
+import 'package:json_to_ui/main.dart';
+import 'package:json_to_ui/sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-String? finalEmail;
-String? finalName;
-String? finalPassword;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -21,32 +19,19 @@ class _MyAppSplashState extends State<SplashScreen> {
     super.initState();
     // new Future.delayed(const Duration(seconds: 1),
     //     () => Navigator.pushNamed(context, 'login'));
-    getValidationData().whenComplete(() async {
-      Timer(Duration(seconds: 5), () {
-        if (finalEmail == null && finalName == null && finalPassword == null) {
-          Navigator.pushNamed(context, 'home');
-        } else {
-          Navigator.pushNamed(context, 'login');
-        }
-        // Navigator.pushNamed(
-        //     context, 'login'
-        // );
-      });
-    });
-  }
 
-  Future getValidationData() async {
-    final SharedPreferences sharedprefrance =
-        await SharedPreferences.getInstance();
-    var obtainEmail = sharedprefrance.getString("email");
-    var obtainName = sharedprefrance.getString("name");
-    var obtainPassword = sharedprefrance.getString("password");
-    setState(() {
-      finalEmail = obtainEmail;
-      finalName = obtainName;
-      finalPassword = obtainPassword;
+    Timer(Duration(seconds: 1), () {
+      final bool? check1 = sharedprefrance!.getBool('checkbox');
+      if (check1 == true) {
+        Navigator.pushReplacementNamed(context, 'home');
+      } else {
+        Navigator.pushReplacementNamed(context, 'signIn');
+      }
+
+      // Navigator.pushNamed(
+      //     context, 'login'
+      // );
     });
-    // print(finalEmail);
   }
 
   @override

@@ -3,23 +3,42 @@ import 'package:json_to_ui/profile_page.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:json_to_ui/main.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+final nameController = TextEditingController();
+final emailController = TextEditingController();
+final passwordController = TextEditingController();
+// String? finalEmail;
+// String? finalName;
+// String? finalPassword;
+
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
-    bool boolVal = false;
-    final nameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    bool? value;
+    // Future getValidationData() async {
+    //   var obtainEmail = sharedprefrance!.getString("email");
+    //   var obtainName = sharedprefrance!.getString("name");
+    //   var obtainPassword = sharedprefrance!.getString("password");
+    //
+    //   // setState(() {
+    //   //   finalEmail = obtainEmail;
+    //   //   finalName = obtainName;
+    //   //   finalPassword = obtainPassword;
+    //   // });
+    //   // print(finalEmail);
+    //   if (obtainEmail != null && obtainName != null && obtainPassword != null) {
+    //     Navigator.pushNamed(context, 'home');
+    //   }
+    // }
+
     // Scaffold is a layout for
     // the major Material Components.
     return Scaffold(
@@ -29,7 +48,7 @@ class _SignInState extends State<SignIn> {
             tooltip: 'Navigation Bar',
             onPressed: null,
           ),
-          title: const Text('Example title'),
+          title: const Text('Json to UI'),
           actions: const [
             IconButton(
               icon: Icon(Icons.search),
@@ -113,77 +132,124 @@ class _SignInState extends State<SignIn> {
                     // ]),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    //forgot password screen
-                  },
-                  child: const Text(
-                    'Forgot Password',
-                  ),
-                ),
+                // TextButton(
+                //   onPressed: () {
+                //     //forgot password screen
+                //   },
+                //   child: const Text(
+                //     'Forgot Password',
+                //   ),
+                // ),
                 Row(
                   children: [
-                    SizedBox(
-                        height: 24.0,
-                        width: 50.0,
-                        child: Theme(
-                            data: ThemeData(
-                                unselectedWidgetColor: Color(0xff00C8E8)),
-                            child: Checkbox(
-                                value: boolVal,
-                                activeColor: Color(0xff00C8E8),
-                                // value: isCheckedRememberMe,
-                                onChanged: (bool? value) {
-                                  setState(() async {
-                                    boolVal = value!;
-                                    SharedPreferences sharedprefrance =
-                                        await SharedPreferences.getInstance();
-                                    sharedprefrance.setString(
-                                        'email', emailController.text);
-                                    sharedprefrance.setString(
-                                        'name', nameController.text);
-                                    sharedprefrance.setString(
-                                        'password', passwordController.text);
-                                  });
-                                }))),
-                    SizedBox(
-                      width: 110.0,
-                      child: Text("Remember Me",
-                          style: TextStyle(
-                            color: Color(0xff646464),
-                            fontSize: 16,
-                          )),
-                    ),
+                    // SizedBox(
+                    //     height: 24.0,
+                    //     width: 50.0,
+                    //     child: Theme(
+                    //         data: ThemeData(
+                    //             unselectedWidgetColor: Color(0xff00C8E8)),
+                    //         child: Checkbox(
+                    //             value: boolVal,
+                    //             activeColor: Color(0xff00C8E8),
+                    //             // value: isCheckedRememberMe,
+                    //             onChanged: (bool? value) {
+                    //               setState(() {
+                    //                 boolVal = value!;
+                    //                 rememberMe = 1;
+                    //               });
+                    //             }))),
+                    // SizedBox(
+                    //   width: 110.0,
+                    //   child: Text("Remember Me",
+                    //       style: TextStyle(
+                    //         color: Color(0xff646464),
+                    //         fontSize: 16,
+                    //       )),
+                    // ),
                     Container(
                         height: 50,
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        padding: const EdgeInsets.fromLTRB(170, 0, 10, 0),
                         child: ElevatedButton(
-                          child: const Text('Login'),
-                          onPressed: () async {
+                          child: const Text('Register'),
+                          onPressed: () {
                             // print(nameController.text);
                             // print(passwordController.text);
-                            // String pattern =
-                            //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                            // RegExp regExp = new RegExp(pattern);
-                            // regExp.hasMatch(value);
 
-                            Navigator.popAndPushNamed(context, 'home');
+                            String patternPassword =
+                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                            RegExp regExpPassword = RegExp(patternPassword);
+                            String patternEmail =
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                            RegExp regExpEmail = RegExp(patternEmail);
+
+                            if (regExpPassword
+                                    .hasMatch(passwordController.text) ==
+                                false) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AlertDialog(
+                                      title: Text(
+                                          "password must be 8 character with Cap,small,numeric,specail cahr"),
+                                    );
+                                  });
+                            } else if (regExpEmail
+                                    .hasMatch(emailController.text) ==
+                                false) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AlertDialog(
+                                      title: Text("Email is not valid"),
+                                    );
+                                  });
+                            } else if (nameController.text.isEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AlertDialog(
+                                      title: Text("Please enter name"),
+                                    );
+                                  });
+                            } else {
+                              sharedprefrance!
+                                  .setString('email', emailController.text);
+                              sharedprefrance!
+                                  .setString('name', nameController.text);
+                              sharedprefrance!.setString(
+                                  'password', passwordController.text);
+
+                              // if (emailController.text != null &&
+                              //     nameController.text != null &&
+                              //     passwordController.text != null) {
+                              //   showDialog(
+                              //       context: context,
+                              //       builder: (BuildContext context) {
+                              //         return AlertDialog(
+                              //           title: Text("please enter all details"),
+                              //         );
+                              //       });
+                              // } else {
+                              //   getValidationData();
+                              Navigator.pushNamed(context, 'signIn');
+                            }
+                            // }
                           },
                         )),
                   ],
                 ),
-                Row(children: <Widget>[
-                  const Text('Does not have account?'),
-                  TextButton(
-                    child: const Text(
-                      'Sign in',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    onPressed: () {
-                      //signup screen
-                    },
-                  )
-                ])
+                // Row(children: <Widget>[
+                //   const Text('Does not have account?'),
+                //   TextButton(
+                //     child: const Text(
+                //       'Sign in',
+                //       style: TextStyle(fontSize: 20),
+                //     ),
+                //     onPressed: () {
+                //       //signup screen
+                //     },
+                //   )
+                // ])
               ],
             ),
           ),

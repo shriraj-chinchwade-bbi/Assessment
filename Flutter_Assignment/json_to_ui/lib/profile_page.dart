@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:json_to_ui/Sign_up.dart';
+import 'package:json_to_ui/main.dart';
 import 'package:json_to_ui/profile_page.dart';
+import 'package:json_to_ui/sign_in.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 
@@ -44,17 +46,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   )),
               Container(
                 padding: const EdgeInsets.all(10),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                  ),
-                ),
+                child: Text("Name : ${finalName}"),
               ),
               ElevatedButton(
                 child: const Text('Log Out'),
-                onPressed: () {
-                  Navigator.pushNamed(context, 'login');
+                onPressed: () async {
+                  await sharedprefrance!.remove('checkbox');
+                  // Navigator.pushReplacementNamed(context, 'signIn');
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, 'signIn', (route) => false);
                 },
               ),
             ])),
