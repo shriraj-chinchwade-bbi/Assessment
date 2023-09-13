@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 import 'package:json_to_ui/sign_in.dart';
 import 'guideline_modal.dart' as modal;
+import 'package:http/http.dart' as http;
 
 // import 'package:collection/collection.dart';
 
@@ -24,33 +26,66 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+var now = DateTime.now();
+var berlinWallFell = DateTime.utc(2023, 9, 12);
+var moonLanding = DateTime.parse("2023-09-12 13:06:04Z");
+List<modal.GuideLinesModal> listGuideLineModal = [];
+List<modal.GuideLinesModal> listGuideLineModalOnline = [];
+List<modal.GuideLinesModal> listGuideLineModalOffline = [];
+bool switchValue = false;
+
+class MyHomePage extends StatefulWidget {
   MyHomePage({super.key, required this.title});
 
   final String title;
 
-  List<modal.GuideLinesModal> listGuideLineModal = [];
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
+class _MyHomePageState extends State<MyHomePage> {
   // Fetch content from the json file
   Future<List<modal.GuideLinesModal>> readJson() async {
-    await Future.delayed(const Duration(seconds: 1));
-    List<modal.GuideLinesModal> listGuideLineModal = [];
+    await Future.delayed(const Duration(seconds: 0));
+
     try {
-      final String response = await rootBundle.loadString('assets/temp.json');
-      final data = await json.decode(response);
-      // modal.GuideLinesModal obj = modal.GuideLinesModal.fromJson(data[0]);
-      // print(obj);
-      for (int i = 0; i < data.length; i++) {
-        listGuideLineModal.add(modal.GuideLinesModal.fromJson(data[i]));
+      if (switchValue == true) {
+        if (listGuideLineModalOnline.isEmpty) {
+          // List<modal.GuideLinesModal> listGuideLineModalOnline = [];
+          final response = await http.read(Uri.parse(
+              'https://raw.githubusercontent.com/shriraj-chinchwade-bbi/Assessment/main/Flutter_Assignment/json_to_ui/assets/temp.json'));
+          final List<dynamic> jsonResponse = json.decode(response);
+          listGuideLineModalOnline = jsonResponse
+              .map((data) => modal.GuideLinesModal.fromJson(data))
+              .toList();
+          print(DateTime.now().millisecondsSinceEpoch);
+          print("api fetched");
+          return listGuideLineModal = listGuideLineModalOnline;
+        } else {
+          return listGuideLineModal = listGuideLineModalOnline;
+        }
+        // return json.decode(response);
+      } else {
+        List<modal.GuideLinesModal> listGuideLineModalOffline = [];
+        final String response = await rootBundle.loadString('assets/temp.json');
+        final data = await json.decode(response);
+        // modal.GuideLinesModal obj = modal.GuideLinesModal.fromJson(data[0]);
+        // print(obj);
+        for (int i = 0; i < data.length; i++) {
+          listGuideLineModalOffline
+              .add(modal.GuideLinesModal.fromJson(data[i]));
+        }
+        // print(listGuideLineModal[0].sequenceNo);
+        listGuideLineModalOffline.sort((a, b) =>
+            num.parse(a.sequenceNo!).compareTo(num.parse(b.sequenceNo!)));
+        // print(listGuideLineModal[0].sequenceNo);
+        // setState(() {
+        //   _items = data[0]["items"];
+        // });
+        print(DateTime.now().millisecondsSinceEpoch);
+        print("local data used");
+        return listGuideLineModal = listGuideLineModalOffline;
       }
-      // print(listGuideLineModal[0].sequenceNo);
-      listGuideLineModal.sort((a, b) =>
-          num.parse(a.sequenceNo!).compareTo(num.parse(b.sequenceNo!)));
-      // print(listGuideLineModal[0].sequenceNo);
-      // setState(() {
-      //   _items = data[0]["items"];
-      // });
-      return listGuideLineModal;
     } catch (e) {
       throw Exception("error:$e");
     }
@@ -61,8 +96,29 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
         appBar:
             AppBar(title: const Text('Json UI GuideLines'), actions: <Widget>[
+          const Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: Text(
+              "Internet Api",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          CupertinoSwitch(
+            // This bool value toggles the switch.
+            value: switchValue,
+            activeColor: CupertinoColors.activeGreen,
+            trackColor: CupertinoColors.destructiveRed,
+            thumbColor: CupertinoColors.white,
+            focusColor: CupertinoColors.systemGrey3,
+            onChanged: (bool? value) {
+              // This is called when the user toggles the switch.
+              setState(() {
+                switchValue = value ?? true;
+              });
+            },
+          ),
           IconButton(
-              icon: Icon(Icons.account_circle),
+              icon: const Icon(Icons.account_circle),
               tooltip: 'Navigation Bar',
               onPressed: () {
                 Navigator.pushNamed(context, 'profile_page');

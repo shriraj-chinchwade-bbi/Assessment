@@ -190,7 +190,7 @@ class _SignInState extends State<SignUp> {
                                   builder: (BuildContext context) {
                                     return const AlertDialog(
                                       title: Text(
-                                          "password must be 8 character with Cap,small,numeric,specail cahr"),
+                                          "password must be 8 character with Cap,small,numeric,special char"),
                                     );
                                   });
                             } else if (regExpEmail

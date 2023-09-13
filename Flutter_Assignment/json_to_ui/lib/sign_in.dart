@@ -1,14 +1,17 @@
 import 'package:json_to_ui/Sign_up.dart';
+import 'dart:convert';
 import 'package:json_to_ui/profile_page.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:json_to_ui/main.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 bool boolVal = false;
 bool? value;
-
+Map<String, dynamic>? login_credentails = {};
+Map<String, dynamic>? login_credentailsApi = {};
 final nameController = TextEditingController();
 final emailController = TextEditingController();
 final passwordController = TextEditingController();
@@ -27,6 +30,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     Future getValidationData() async {
+      await Future.delayed(const Duration(seconds: 0));
       var obtainEmail = sharedprefrance!.getString("email");
       var obtainName = sharedprefrance!.getString("name");
       var obtainPassword = sharedprefrance!.getString("password");
@@ -36,6 +40,15 @@ class _SignInState extends State<SignIn> {
         finalName = obtainName;
         finalPassword = obtainPassword;
       });
+      if (login_credentailsApi!.isEmpty) {
+        final user_response = await http.read(Uri.parse(
+            'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/user_details.json'));
+        login_credentailsApi = json.decode(user_response);
+        print(login_credentailsApi);
+        return login_credentails = login_credentailsApi;
+      } else {
+        return login_credentails = login_credentailsApi;
+      }
       // print(finalEmail);
     }
 
@@ -48,7 +61,7 @@ class _SignInState extends State<SignIn> {
             tooltip: 'Navigation Bar',
             onPressed: null,
           ),
-          title: const Text('Example title'),
+          title: const Text('Json to UI'),
           actions: const [
             IconButton(
               icon: Icon(Icons.search),
@@ -167,7 +180,7 @@ class _SignInState extends State<SignIn> {
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: ElevatedButton(
                           child: const Text('Sign In'),
-                          onPressed: () {
+                          onPressed: () async {
                             // print(nameController.text);
                             // print(passwordController.text);
                             // String pattern =
@@ -175,7 +188,7 @@ class _SignInState extends State<SignIn> {
                             // RegExp regExp = new RegExp(pattern);
                             // regExp.hasMatch(value);
 
-                            getValidationData();
+                            await getValidationData();
 
                             if (emailController.text.isEmpty &&
                                 passwordController.text.isEmpty) {
@@ -186,6 +199,11 @@ class _SignInState extends State<SignIn> {
                                       title: Text("please enter all details"),
                                     );
                                   });
+                            } else if (emailController.text ==
+                                    login_credentails!['email'] &&
+                                passwordController.text ==
+                                    login_credentails!['password']) {
+                              Navigator.pushReplacementNamed(context, 'home');
                             } else if (emailController.text == finalEmail &&
                                 passwordController.text == finalPassword) {
                               Navigator.pushReplacementNamed(context, 'home');
