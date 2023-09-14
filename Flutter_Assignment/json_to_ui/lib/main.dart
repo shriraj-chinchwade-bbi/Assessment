@@ -7,6 +7,8 @@ import 'package:json_to_ui/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:json_to_ui/sign_in.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:json_to_ui/login_credentials.dart';
 
 SharedPreferences? sharedprefrance;
 
@@ -25,16 +27,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: 'splash',
-        routes: {
-          'splash': (context) => SplashScreen(),
-          'login': (context) => SignUp(),
-          'signIn': (context) => SignIn(),
-          'profile_page': (context) => ProfilePage(),
-          'home': (context) => HomeScreen(),
-        });
+    return ChangeNotifierProvider(
+        create: (_) => UserName(),
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: 'splash',
+            routes: {
+              'splash': (context) => SplashScreen(),
+              'login': (context) => SignUp(),
+              'signIn': (context) => SignIn(),
+              'profile_page': (context) => ProfilePage(),
+              'home': (context) => HomeScreen(),
+            }));
   }
 }
 

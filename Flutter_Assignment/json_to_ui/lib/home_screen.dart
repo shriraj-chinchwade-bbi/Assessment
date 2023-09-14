@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:json_to_ui/Sign_up.dart';
+import 'package:json_to_ui/login_credentials.dart';
 import 'package:json_to_ui/profile_page.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 import 'package:json_to_ui/sign_in.dart';
+import 'package:provider/provider.dart';
 import 'guideline_modal.dart' as modal;
 import 'package:http/http.dart' as http;
 
@@ -93,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // final nameprovider = Provider.of<UserName>(context);
     return Scaffold(
         appBar:
             AppBar(title: const Text('Json UI GuideLines'), actions: <Widget>[
@@ -100,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(top: 18.0),
             child: Text(
               "Internet Api",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 15),
             ),
           ),
           CupertinoSwitch(
@@ -117,12 +120,19 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },
           ),
-          IconButton(
-              icon: const Icon(Icons.account_circle),
-              tooltip: 'Navigation Bar',
-              onPressed: () {
-                Navigator.pushNamed(context, 'profile_page');
+          Row(
+            children: [
+              Consumer<UserName>(builder: (context, UserName, child) {
+                return Text(global_name);
               }),
+              IconButton(
+                  icon: const Icon(Icons.account_circle),
+                  tooltip: 'profile',
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'profile_page');
+                  }),
+            ],
+          ),
         ]),
         // body is the majority of the screen.
         body: FutureBuilder<List<modal.GuideLinesModal>>(

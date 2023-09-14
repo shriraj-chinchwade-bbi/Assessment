@@ -7,16 +7,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:json_to_ui/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:json_to_ui/login_credentials.dart';
 
 bool boolVal = false;
-bool? value;
+bool? boolApi;
+
+Map<String, dynamic>? loginCredentialsDisplay = {};
 Map<String, dynamic>? login_credentails = {};
 Map<String, dynamic>? login_credentailsApi = {};
 final nameController = TextEditingController();
 final emailController = TextEditingController();
 final passwordController = TextEditingController();
 String? finalEmail;
-String? finalName;
+
 String? finalPassword;
 
 class SignIn extends StatefulWidget {
@@ -35,18 +38,31 @@ class _SignInState extends State<SignIn> {
       var obtainName = sharedprefrance!.getString("name");
       var obtainPassword = sharedprefrance!.getString("password");
 
-      setState(() {
-        finalEmail = obtainEmail;
-        finalName = obtainName;
-        finalPassword = obtainPassword;
-      });
+      finalEmail = obtainEmail;
+      global_name = obtainName!;
+      finalPassword = obtainPassword;
+
       if (login_credentailsApi!.isEmpty) {
         final user_response = await http.read(Uri.parse(
             'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/user_details.json'));
         login_credentailsApi = json.decode(user_response);
+        loginCredentialsDisplay = {};
+        // global_name = login_credentailsApi!['name'];
+        // global_name = "";
+        loginCredentialsDisplay!['email'] = login_credentailsApi!['email'];
+        loginCredentialsDisplay!['password'] =
+            login_credentailsApi!['password'];
+        print(global_name);
         print(login_credentailsApi);
         return login_credentails = login_credentailsApi;
       } else {
+        loginCredentialsDisplay = {};
+        // global_name = login_credentailsApi!['name'];
+        // global_name = "";
+        loginCredentialsDisplay!['email'] = login_credentailsApi!['email'];
+        loginCredentialsDisplay!['password'] =
+            login_credentailsApi!['password'];
+        print(global_name);
         return login_credentails = login_credentailsApi;
       }
       // print(finalEmail);
@@ -203,9 +219,11 @@ class _SignInState extends State<SignIn> {
                                     login_credentails!['email'] &&
                                 passwordController.text ==
                                     login_credentails!['password']) {
+                              boolApi = true;
                               Navigator.pushReplacementNamed(context, 'home');
                             } else if (emailController.text == finalEmail &&
                                 passwordController.text == finalPassword) {
+                              boolApi = false;
                               Navigator.pushReplacementNamed(context, 'home');
                             } else {
                               showDialog(
