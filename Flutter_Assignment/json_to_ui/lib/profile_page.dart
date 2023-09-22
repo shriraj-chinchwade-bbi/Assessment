@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:json_to_ui/Sign_up.dart';
 import 'package:json_to_ui/main.dart';
@@ -7,6 +8,8 @@ import 'package:json_to_ui/sign_in.dart';
 import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 import 'package:json_to_ui/login_credentials.dart';
+
+import 'bloc_dummy_bloc.dart';
 
 final updateNameController = TextEditingController();
 
@@ -105,8 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 onPressed: () async {
                   await sharedprefrance!.remove('checkbox');
                   // Navigator.pushReplacementNamed(context, 'signIn');
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, 'signIn', (route) => false);
+                  BlocProvider.of<DummyBloc>(context).loadSign();
                 },
               ),
             ])),

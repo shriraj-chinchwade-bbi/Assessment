@@ -1,3 +1,4 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:json_to_ui/Sign_up.dart';
 import 'dart:convert';
 import 'package:json_to_ui/profile_page.dart';
@@ -8,6 +9,8 @@ import 'package:json_to_ui/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_to_ui/login_credentials.dart';
+
+import 'bloc_dummy_bloc.dart';
 
 bool boolVal = false;
 bool? boolApi;
@@ -220,11 +223,13 @@ class _SignInState extends State<SignIn> {
                                 passwordController.text ==
                                     login_credentails!['password']) {
                               boolApi = true;
-                              Navigator.pushReplacementNamed(context, 'home');
+                              BlocProvider.of<DummyBloc>(context)
+                                  .loadHomeScreen();
                             } else if (emailController.text == finalEmail &&
                                 passwordController.text == finalPassword) {
                               boolApi = false;
-                              Navigator.pushReplacementNamed(context, 'home');
+                              BlocProvider.of<DummyBloc>(context)
+                                  .loadHomeScreen();
                             } else {
                               showDialog(
                                   context: context,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:json_to_ui/Sign_up.dart';
 import 'package:json_to_ui/login_credentials.dart';
 import 'package:json_to_ui/profile_page.dart';
@@ -9,6 +10,7 @@ import 'package:json_to_ui/splash_screen.dart';
 import 'package:json_to_ui/home_screen.dart';
 import 'package:json_to_ui/sign_in.dart';
 import 'package:provider/provider.dart';
+import 'bloc_dummy_bloc.dart';
 import 'guideline_modal.dart' as modal;
 import 'package:http/http.dart' as http;
 
@@ -129,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: const Icon(Icons.account_circle),
                   tooltip: 'profile',
                   onPressed: () {
-                    Navigator.pushNamed(context, 'profile_page');
+                    BlocProvider.of<DummyBloc>(context).loadProfilePage();
                   }),
             ],
           ),

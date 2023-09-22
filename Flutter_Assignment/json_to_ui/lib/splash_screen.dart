@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:json_to_ui/Sign_up.dart';
 import 'package:json_to_ui/profile_page.dart';
 import 'package:json_to_ui/splash_screen.dart';
@@ -7,6 +8,8 @@ import 'package:json_to_ui/home_screen.dart';
 import 'package:json_to_ui/main.dart';
 import 'package:json_to_ui/sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'bloc_dummy_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -23,9 +26,9 @@ class _MyAppSplashState extends State<SplashScreen> {
     Timer(Duration(seconds: 1), () {
       final bool? check1 = sharedprefrance!.getBool('checkbox');
       if (check1 == true) {
-        Navigator.pushReplacementNamed(context, 'home');
+        BlocProvider.of<DummyBloc>(context).loadHomeScreen();
       } else {
-        Navigator.pushReplacementNamed(context, 'signIn');
+        BlocProvider.of<DummyBloc>(context).loadSign();
       }
 
       // Navigator.pushNamed(
