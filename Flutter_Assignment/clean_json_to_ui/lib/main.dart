@@ -1,6 +1,13 @@
+import 'package:clean_json_to_ui/features/authentication/presentation/pages/authentication_sign_in.dart';
+import 'package:clean_json_to_ui/features/home_screen/presentation/bloc/home_screen_bloc.dart';
 import 'package:clean_json_to_ui/features/home_screen/presentation/pages/home_screen_page.dart';
 import 'package:flutter/material.dart';
 import 'package:clean_json_to_ui/injection_container.dart' as di;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +44,7 @@ class MyApp extends StatelessWidget {
       ),
       home:
           // const MyHomePage(title: 'Flutter Demo Home Page'),
-          HomeScreenPage(),
+          BlocHandler(),
     );
   }
 }
@@ -127,6 +134,37 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class BlocHandler extends StatelessWidget {
+  const BlocHandler({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          create: (BuildContext context) => sl<AuthenticationBloc>(),
+        ),
+        BlocProvider<HomeScreenBloc>(
+          create: (BuildContext context) => sl<HomeScreenBloc>(),
+        ),
+      ],
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        builder: (BuildContext context, state) {
+          // if (state is AuthenticationState) {
+          //   return AuthenticationSignIn();
+          // }
+
+          // else if (state is SignInState) {
+          //   return SignIn();
+          // }
+
+          return AuthenticationSignIn();
+        },
+      ),
     );
   }
 }

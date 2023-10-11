@@ -1,76 +1,34 @@
+import 'package:clean_json_to_ui/features/authentication/presentation/pages/authentication_sign_up.dart';
+import 'package:clean_json_to_ui/features/home_screen/presentation/bloc/home_screen_bloc.dart';
+import 'package:clean_json_to_ui/features/home_screen/presentation/pages/home_screen_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:json_to_ui/Sign_up.dart';
+import 'package:matcher/expect.dart';
+import 'package:clean_json_to_ui/features/authentication/data/datasources/authentication_data_source.dart';
 import 'dart:convert';
-import 'package:json_to_ui/profile_page.dart';
-import 'package:json_to_ui/splash_screen.dart';
-import 'package:json_to_ui/home_screen.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:json_to_ui/main.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:json_to_ui/login_credentials.dart';
 
-import 'bloc_dummy_bloc.dart';
+import '../../../../core/util/utility.dart';
+import '../../../../injection_container.dart';
+import '../../../../main.dart';
+import '../../../home_screen/presentation/pages/home_screen_page.dart';
+import '../../data/repositories/authentication_repository_impl.dart';
+import '../bloc/authentication_bloc.dart';
+import '../widgets/authentication_validation.dart';
 
-bool boolVal = false;
-bool? boolApi;
-
-Map<String, dynamic>? loginCredentialsDisplay = {};
-Map<String, dynamic>? login_credentails = {};
-Map<String, dynamic>? login_credentailsApi = {};
-final nameController = TextEditingController();
-final emailController = TextEditingController();
-final passwordController = TextEditingController();
-String? finalEmail;
-
-String? finalPassword;
-
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class AuthenticationSignIn extends StatefulWidget {
+  const AuthenticationSignIn({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<AuthenticationSignIn> createState() => _AuthenticationSignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _AuthenticationSignInState extends State<AuthenticationSignIn> {
   @override
   Widget build(BuildContext context) {
-    Future getValidationData() async {
-      await Future.delayed(const Duration(seconds: 0));
-      var obtainEmail = sharedprefrance!.getString("email");
-      var obtainName = sharedprefrance!.getString("name");
-      var obtainPassword = sharedprefrance!.getString("password");
-
-      finalEmail = obtainEmail;
-      global_name = obtainName!;
-      finalPassword = obtainPassword;
-
-      if (login_credentailsApi!.isEmpty) {
-        final user_response = await http.read(
-            Uri.parse('https://cpms.bbinfotech.com/test/user_details.json'));
-        login_credentailsApi = json.decode(user_response);
-        loginCredentialsDisplay = {};
-        // global_name = login_credentailsApi!['name'];
-        // global_name = "";
-        loginCredentialsDisplay!['email'] = login_credentailsApi!['email'];
-        loginCredentialsDisplay!['password'] =
-            login_credentailsApi!['password'];
-        print(global_name);
-        print(login_credentailsApi);
-        return login_credentails = login_credentailsApi;
-      } else {
-        loginCredentialsDisplay = {};
-        // global_name = login_credentailsApi!['name'];
-        // global_name = "";
-        loginCredentialsDisplay!['email'] = login_credentailsApi!['email'];
-        loginCredentialsDisplay!['password'] =
-            login_credentailsApi!['password'];
-        print(global_name);
-        return login_credentails = login_credentailsApi;
-      }
-      // print(finalEmail);
-    }
-
     // Scaffold is a layout for
     // the major Material Components.
     return Scaffold(
@@ -186,7 +144,7 @@ class _SignInState extends State<SignIn> {
                                     checked();
                                   });
                                 }))),
-                    SizedBox(
+                    const SizedBox(
                       width: 110.0,
                       child: Text("Remember Me",
                           style: TextStyle(
@@ -200,17 +158,18 @@ class _SignInState extends State<SignIn> {
                         child: ElevatedButton(
                           child: const Text('Sign In'),
                           onPressed: () async {
-                            // print(nameController.text);
-                            // print(passwordController.text);
-                            // String pattern =
-                            //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-                            // RegExp regExp = new RegExp(pattern);
-                            // regExp.hasMatch(value);
-
-                            await getValidationData();
-
-                            if (emailController.text.isEmpty &&
-                                passwordController.text.isEmpty) {
+                            // BlocBuilder<HomeScreenBloc, AuthenticationState>(
+                            //   builder: (context, state) {
+                            //     // TODO: build UI based on CounterBloc's state.
+                            //     sl<AuthenticationBloc>().callAuthentication();
+                            //     return HomeScreenPage();
+                            //   },
+                            // );
+                            print(decision);
+                            await sl<AuthenticationBloc>()
+                                .callAuthenticationSignIn();
+                            print(decision);
+                            if (decision == false) {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -218,28 +177,54 @@ class _SignInState extends State<SignIn> {
                                       title: Text("please enter all details"),
                                     );
                                   });
-                            } else if (emailController.text ==
-                                    login_credentails!['email'] &&
-                                passwordController.text ==
-                                    login_credentails!['password']) {
-                              boolApi = true;
-                              BlocProvider.of<DummyBloc>(context)
-                                  .loadHomeScreen();
-                            } else if (emailController.text == finalEmail &&
-                                passwordController.text == finalPassword) {
-                              boolApi = false;
-                              BlocProvider.of<DummyBloc>(context)
-                                  .loadHomeScreen();
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const AlertDialog(
-                                      title: Text(
-                                          "username password did'nt matched"),
-                                    );
-                                  });
+                            } else if (decision == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreenPage()),
+                              );
                             }
+                            // if (emailController.text.isEmpty &&
+                            //     passwordController.text.isEmpty) {
+                            //   showDialog(
+                            //       context: context,
+                            //       builder: (BuildContext context) {
+                            //         return const AlertDialog(
+                            //           title: Text("please enter all details"),
+                            //         );
+                            //       });
+                            // } else if (emailController.text ==
+                            //         login_credentails['email'] &&
+                            //     passwordController.text ==
+                            //         login_credentails['password']) {
+                            //   boolApi = true;
+                            //   // BlocProvider.of<HomeScreenBloc>(context)
+                            //   //     .callDecider();
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => HomeScreenPage()),
+                            //   );
+                            // } else if (emailController.text == finalEmail &&
+                            //     passwordController.text == finalPassword) {
+                            //   boolApi = false;
+                            //   // BlocProvider.of<HomeScreenBloc>(context)
+                            //   //     .callDecider();
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => HomeScreenPage()),
+                            //   );
+                            // } else {
+                            //   showDialog(
+                            //       context: context,
+                            //       builder: (BuildContext context) {
+                            //         return const AlertDialog(
+                            //           title: Text(
+                            //               "username password did'nt matched"),
+                            //         );
+                            //       });
+                            // }
                           },
                         )),
                   ],
@@ -252,7 +237,12 @@ class _SignInState extends State<SignIn> {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, 'login');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AuthenticationSignUp()),
+                      );
+                      ;
                       //signup screen
                     },
                   )
