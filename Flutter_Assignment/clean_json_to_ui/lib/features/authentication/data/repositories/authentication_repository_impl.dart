@@ -19,41 +19,65 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   late final AuthenticationDataSource dataSource;
 
   @override
-  Future<Either<Failure, AuthenticationModel>> authenticationLogin() {
+  Future<Either<Failure, dynamic>> authenticationLogin() {
     // TODO: implement authenticationLogin
     return validateData(emailController.text, passwordController.text);
   }
 
   @override
-  Future<Either<Failure, AuthenticationModel>> authenticationRegister() {
+  Future<Either<Failure, dynamic>> authenticationRegister() {
     // TODO: implement authenticationRegister
-    return _getAuthentication();
+    return _regsiterNew();
   }
 
-  validateData(String inputEmail, String inputPassword) async {
-    var obtainEmail = sharedprefrance.getString("email");
-    var obtainName = sharedprefrance.getString("name");
-    var obtainPassword = sharedprefrance.getString("password");
-
-    int emailResultOffline = inputEmail.compareTo(obtainEmail!);
-    int emailResultOnline = inputEmail.compareTo(login_credentails['email']);
-    int passwordResultOffline = inputPassword.compareTo(obtainPassword!);
-    int passwordResultOnline =
-        inputPassword.compareTo(login_credentails['password']);
-    if (inputEmail.isEmpty) {
-      decision = false;
-    } else if ((emailResultOffline == 0 && passwordResultOffline == 0) ||
-        (emailResultOnline == 0 && passwordResultOnline == 0)) {
-      decision = true;
-    } else {
-      decision = false;
-    }
-    return decision;
-  }
-
-  Future<Either<Failure, AuthenticationModel>> _getAuthentication() async {
+  Future<Either<Failure, dynamic>> validateData(
+      String inputEmail, String inputPassword) async {
     try {
-      final localData = await dataSource.authenticationData();
+      login_credentails = await dataSource.authenticationDataRemote() as Map;
+      try {
+        var obtainEmail = sharedprefrance.getString("email");
+        var obtainName = sharedprefrance.getString("name");
+        var obtainPassword = sharedprefrance.getString("password");
+
+        int emailResultOffline = inputEmail.compareTo(obtainEmail!);
+        int passwordResultOffline = inputPassword.compareTo(obtainPassword!);
+        int emailResultOnline =
+            inputEmail.compareTo(login_credentails['email']);
+        int passwordResultOnline =
+            inputPassword.compareTo(login_credentails['password']);
+        if ((emailResultOffline == 0 && passwordResultOffline == 0) ||
+            (emailResultOnline == 0 && passwordResultOnline == 0)) {
+          decision = true;
+        } else {
+          decision = false;
+        }
+      } catch (e) {
+        var obtainEmail = login_credentails['email'];
+        // var obtainName = sharedprefrance.getString("name");
+        var obtainPassword = login_credentails['password'];
+
+        int emailResultOffline = inputEmail.compareTo(obtainEmail!);
+        int passwordResultOffline = inputPassword.compareTo(obtainPassword!);
+        int emailResultOnline =
+            inputEmail.compareTo(login_credentails['email']);
+        int passwordResultOnline =
+            inputPassword.compareTo(login_credentails['password']);
+        if ((emailResultOffline == 0 && passwordResultOffline == 0) ||
+            (emailResultOnline == 0 && passwordResultOnline == 0)) {
+          decision = true;
+        } else {
+          decision = false;
+        }
+      }
+      return Right(decision);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  Future<Either<Failure, dynamic>> _regsiterNew() async {
+    try {
+      var localData = await dataSource.authenticationDataLocal();
       return Right(localData);
     } on CacheException {
       return Left(CacheFailure());

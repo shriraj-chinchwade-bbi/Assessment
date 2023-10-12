@@ -42,12 +42,12 @@ class _SignInState extends State<SignIn> {
       var obtainPassword = sharedprefrance!.getString("password");
 
       finalEmail = obtainEmail;
-      global_name = obtainName!;
+      // global_name = obtainName!;
       finalPassword = obtainPassword;
 
       if (login_credentailsApi!.isEmpty) {
-        final user_response = await http.read(
-            Uri.parse('https://cpms.bbinfotech.com/test/user_details.json'));
+        final user_response = await http.read(Uri.parse(
+            'https://s3.eu-west-1.amazonaws.com/bbi.appsdata.2013/for_development/user_details.json'));
         login_credentailsApi = json.decode(user_response);
         loginCredentialsDisplay = {};
         // global_name = login_credentailsApi!['name'];

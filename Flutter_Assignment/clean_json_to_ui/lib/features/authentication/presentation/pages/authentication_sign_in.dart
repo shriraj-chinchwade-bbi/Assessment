@@ -166,10 +166,8 @@ class _AuthenticationSignInState extends State<AuthenticationSignIn> {
                             //   },
                             // );
                             print(decision);
-                            await sl<AuthenticationBloc>()
-                                .callAuthenticationSignIn();
-                            print(decision);
-                            if (decision == false) {
+                            if (emailController.text.isEmpty ||
+                                passwordController.text.isEmpty) {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -177,12 +175,33 @@ class _AuthenticationSignInState extends State<AuthenticationSignIn> {
                                       title: Text("please enter all details"),
                                     );
                                   });
+                            }
+                            await sl<AuthenticationBloc>()
+                                .callAuthenticationSignIn();
+
+                            print(decision);
+                            if (decision == false) {
+                              emailController.clear();
+                              nameController.clear();
+                              passwordController.clear();
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const AlertDialog(
+                                      title: Text("wrong credentials"),
+                                    );
+                                  });
                             } else if (decision == true) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreenPage()),
-                              );
+                              emailController.clear();
+                              nameController.clear();
+                              passwordController.clear();
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => HomeScreenPage()),
+                              // );
+                              BlocProvider.of<AuthenticationBloc>(context)
+                                  .loadSigninScreen();
                             }
                             // if (emailController.text.isEmpty &&
                             //     passwordController.text.isEmpty) {
@@ -237,12 +256,13 @@ class _AuthenticationSignInState extends State<AuthenticationSignIn> {
                       style: TextStyle(fontSize: 20),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AuthenticationSignUp()),
-                      );
-                      ;
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => AuthenticationSignUp()),
+                      // );
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .loadSigninToSignupScreen();
                       //signup screen
                     },
                   )

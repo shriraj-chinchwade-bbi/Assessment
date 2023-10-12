@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'features/authentication/presentation/pages/authentication_sign_up.dart';
 import 'injection_container.dart';
 
 void main() async {
@@ -154,15 +155,25 @@ class BlocHandler extends StatelessWidget {
       ],
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (BuildContext context, state) {
-          // if (state is AuthenticationState) {
-          //   return AuthenticationSignIn();
-          // }
-
-          // else if (state is SignInState) {
-          //   return SignIn();
-          // }
-
-          return AuthenticationSignIn();
+          if (state is AuthenticationInitial) {
+            return AuthenticationSignIn();
+          } else if (state is AuthenticationSigninToSignupState) {
+            return AuthenticationSignUp();
+          } else if (state is AuthenticationSignupState) {
+            return AuthenticationSignIn();
+          } else if (state is AuthenticationSigninState) {
+            return BlocBuilder<HomeScreenBloc, HomeScreenState>(
+              builder: (BuildContext context, state) {
+                if (state is HomeScreenInitial) {
+                  return const HomeScreenPage();
+                } else {
+                  return Container();
+                }
+              },
+            );
+          } else {
+            return AuthenticationSignIn();
+          }
         },
       ),
     );

@@ -18,7 +18,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
   HomeScreenBloc(
       {required this.homeScreenOnlineData, required this.homeScreenOfflineData})
       : super(HomeScreenInitial()) {
-    on<HomeScreenEvent>((event, emit) => (HomeScreenInitial()));
+    on<HomeScreenDataEvent>((event, emit) => (HomeScreenInitial()));
   }
   Future<List<GuideLinesModal>> callDecider() async {
     if (switchValue == false) {
@@ -29,5 +29,9 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       await homeScreenOnlineData();
     }
     return listGuideLineModal;
+  }
+
+  loadHomeScreen() {
+    add(HomeScreenDataEvent());
   }
 }

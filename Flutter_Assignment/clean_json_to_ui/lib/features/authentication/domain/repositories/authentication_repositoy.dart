@@ -4,6 +4,6 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
 
 abstract class AuthenticationRepository {
-  Future<Either<Failure, AuthenticationModel>> authenticationLogin();
-  Future<Either<Failure, AuthenticationModel>> authenticationRegister();
+  Future<Either<Failure, dynamic>> authenticationLogin();
+  Future<Either<Failure, dynamic>> authenticationRegister();
 }

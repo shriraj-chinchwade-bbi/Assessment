@@ -19,18 +19,33 @@ class AuthenticationBloc
   AuthenticationBloc(
       {required this.authenticationLogin, required this.authenticationRegister})
       : super(AuthenticationInitial()) {
-    on<AuthenticationEvent>((event, emit) => (AuthenticationInitial()));
-  }
-  dynamic callAuthenticationSignIn() async {
-    abc = "true";
+    on<AuthenticationSignupEvent>(
+        (event, emit) => emit(AuthenticationSignupState()));
 
+    on<AuthenticationSigninToSignupEvent>(
+        (event, emit) => emit(AuthenticationSigninToSignupState()));
+
+    on<AuthenticationSigninEvent>(
+        (event, emit) => emit(AuthenticationSigninState()));
+  }
+  loadSigninScreen() {
+    add(AuthenticationSigninEvent());
+  }
+
+  loadSignupScreen() {
+    add(AuthenticationSignupEvent());
+  }
+
+  loadSigninToSignupScreen() {
+    add(AuthenticationSigninToSignupEvent());
+  }
+
+  dynamic callAuthenticationSignIn() async {
     await authenticationLogin();
     return decision;
   }
 
   dynamic callAuthenticationSignUp() async {
-    abc = "true";
-
     await authenticationRegister();
     return login_credentails;
   }

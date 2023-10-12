@@ -10,7 +10,7 @@ class AuthenticationRegister {
   final AuthenticationRepository repository;
 
   @override
-  Future<Either<Failure, AuthenticationModel>> call() async {
+  Future<Either<Failure, dynamic>> call() async {
     return await repository.authenticationRegister();
   }
 }

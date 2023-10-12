@@ -1,4 +1,5 @@
 import 'package:clean_json_to_ui/features/authentication/presentation/pages/authentication_sign_in.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
@@ -223,6 +224,9 @@ class _AuthenticationSignUpState extends State<AuthenticationSignUp> {
                               // print(sharedprefrance.getString("password"));
                               sl<AuthenticationBloc>()
                                   .callAuthenticationSignUp();
+                              emailController.clear();
+                              nameController.clear();
+                              passwordController.clear();
 
                               // } catch (e) {
                               //   throw Exception("error:$e");
@@ -240,12 +244,14 @@ class _AuthenticationSignUpState extends State<AuthenticationSignUp> {
                               //       });
                               // } else {
                               //   getValidationData();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        AuthenticationSignIn()),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) =>
+                              //           AuthenticationSignIn()),
+                              // );
+                              BlocProvider.of<AuthenticationBloc>(context)
+                                  .loadSignupScreen();
                             }
                             // }
                           },
