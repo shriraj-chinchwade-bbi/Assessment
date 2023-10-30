@@ -16,6 +16,7 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   late AuthenticationLogin authenticationLogin;
   late AuthenticationRegister authenticationRegister;
+
   AuthenticationBloc(
       {required this.authenticationLogin, required this.authenticationRegister})
       : super(AuthenticationInitial()) {
@@ -41,7 +42,7 @@ class AuthenticationBloc
   }
 
   dynamic callAuthenticationSignIn() async {
-    await authenticationLogin();
+    await authenticationLogin;
     return decision;
   }
 

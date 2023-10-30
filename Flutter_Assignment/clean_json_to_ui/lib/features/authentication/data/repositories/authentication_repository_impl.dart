@@ -85,4 +85,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
     // return Right(login_credentails);
   }
+
+  @override
+  Future<Either<Failure, bool>> callAuthenticationForLogin(
+      String email, String password) {
+    // TODO: implement callAuthenticationForLogin
+    throw validateData(email, password);
+  }
+
+  @override
+  getValueToUsecaseFile(String name, String email, String password) {
+    // TODO: implement getValueToUsecaseFile
+    throw dataSource.authenticationDataLocal();
+  }
 }

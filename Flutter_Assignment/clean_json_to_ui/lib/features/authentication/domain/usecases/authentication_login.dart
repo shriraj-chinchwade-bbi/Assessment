@@ -10,7 +10,12 @@ class AuthenticationLogin {
   final AuthenticationRepository repository;
 
   @override
-  Future<Either<Failure, dynamic>> call() async {
+  invoke() async {
     return await repository.authenticationLogin();
+  }
+
+  Future<Either<Failure, bool>> getLoginValueToUsecaseFile(
+      String email, String password) async {
+    return await repository.callAuthenticationForLogin(email, password);
   }
 }

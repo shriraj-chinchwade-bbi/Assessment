@@ -52,6 +52,7 @@ dependencies:
   data_connection_checker_tv: ^0.3.5-nullsafety
   internet_connection_checker: ^1.0.0+1
   matcher: ^0.12.16
+  firebase_core: ^2.17.0
 
 
 dev_dependencies:
